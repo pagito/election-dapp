@@ -47,7 +47,9 @@ App = {
         console.log(account);
         App.account = account;
         $("#accountAddress").html("Your Account: " + account);
-      }
+      } else {
+        console.log(err);
+      }      
     });
 
     // Load contract data
