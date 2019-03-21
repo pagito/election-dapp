@@ -16,6 +16,11 @@ contract Election {
 	// Store Candidates Count
 	uint public candidatesCount;
 
+	// Voted event
+    event votedEvent (
+        uint indexed _candidateId
+    );
+
 	// Constructor
 	constructor() public {
 		addCandidate("Mr. Blue");
@@ -36,13 +41,16 @@ contract Election {
 		require (!voters[msg.sender]);		
 
 		// Require a valid candidate
-		require (_candidateId >0 && _candidateId < candidatesCount);
+		require (_candidateId > 0 && _candidateId <= candidatesCount);
 
 		// Record that voter has voted
 		voters[msg.sender] = true;
 
 		// Update candidate vote Count
-		candidates[_candidateId].voteCount ++; 
+		candidates[_candidateId].voteCount ++;
+
+		// trigger voted event
+    	emit votedEvent(_candidateId);
 	}
 	
 

@@ -27,7 +27,23 @@ App = {
       // Connect provider to interact with contract
       App.contracts.Election.setProvider(App.web3Provider);
 
+      App.listenForEvents();
+
       return App.render();
+    });
+  },
+
+  // Listen for events emitted from the contract
+  listenForEvents: function() {
+    App.contracts.Election.deployed().then(function(instance) {
+      instance.votedEvent({}, {
+        fromBlock: 0,
+        toBlock: 'latest'
+      }).watch(function(error, event) {
+        console.log("event triggered", event)
+        // Reload when a new vote is recorded
+        App.render();
+      });
     });
   },
 
@@ -55,12 +71,12 @@ App = {
       //onsole.log(web3.eth.getCoinbase());
       if (err === null) {
         //console.log(err)
-        console.log(account);
+        //console.log(account);
         App.account = account;
         $("#accountAddress").html("Your Account: " + account);
-      } else {
+      }/* else {
         console.log(err);
-      }      
+      } */     
     });
 
     // Load contract data
